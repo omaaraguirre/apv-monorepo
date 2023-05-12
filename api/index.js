@@ -12,7 +12,7 @@ dotenv.config()
 conectarDB()
 
 app.use(cors())
-app.use(express.static('../app/dist'))
+app.use(express.static('./dist'))
 app.use('/api/veterinarios', veterinarioRoutes)
 app.use('/api/pacientes', pacienteRoutes)
 app.use((req, res) => res.sendFile(path.resolve('../app/dist/index.html')))
