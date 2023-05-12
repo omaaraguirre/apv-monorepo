@@ -5,6 +5,7 @@ import veterinarioRoutes from './routes/veterinarioRoutes.js'
 import pacienteRoutes from './routes/pacienteRoutes.js'
 import cors from 'cors'
 import path from 'path'
+console.log('running')
 
 const app = express()
 app.use(express.json()) // Habilita el envío de JSON vía POST
