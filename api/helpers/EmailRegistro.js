@@ -21,7 +21,7 @@ const emailRegistro = async (data) => {
     html: `
         Hola <strong>${nombre}</strong></p>
         <p>Has creado tu cuenta en DevWebCamp, sólo debes confirmarla presionando el siguiente enlace:</p>
-        <p><a href='http://${host}/confirmar/${token}'>Confirmar cuenta</a></p>
+        <p><a href='https://${host}/confirmar/${token}'>Confirmar cuenta</a></p>
         <p>Si no solicitaste esto, puedes ignorar el correo.</p>
         `
   })

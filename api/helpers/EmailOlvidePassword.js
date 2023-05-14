@@ -21,7 +21,7 @@ const emailOlvidePassword = async (data) => {
     html: `
         Hola <strong>${nombre}</strong></p>
         <p>Has solicitado reestablecer tu contraseña. Haz click en el siguiente enlace para continuar:</p>
-        <p><a href='http://${host}/olvide/${token}'>Reestablecer contraseña</a></p>
+        <p><a href='https://${host}/olvide/${token}'>Reestablecer contraseña</a></p>
         <p>Si no solicitaste esto, puedes ignorar el correo.</p>
         `
   })
