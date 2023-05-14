@@ -16,8 +16,7 @@ export const registrar = async (req, res) => {
     const veterinario = new Veterinario(req.body)
     const guardado = await veterinario.save()
 
-    const host = req.headers.host
-    emailRegistro({ email, nombre, token: guardado.token, host })
+    emailRegistro({ email, nombre, token: guardado.token })
 
     res.send({ guardado })
   } catch (error) {
@@ -87,12 +86,11 @@ export const olvidePassword = async (req, res) => {
   try {
     veterinario.token = generarId()
     await veterinario.save()
-    const host = req.headers.host
+
     emailOlvidePassword({
       email,
       nombre: veterinario.nombre,
-      token: veterinario.token,
-      host
+      token: veterinario.token
     })
     res.json({ msg: 'Hemos enviado un email con las instrucciones' })
   } catch (error) {
