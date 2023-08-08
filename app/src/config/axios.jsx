@@ -1,7 +1,10 @@
 import axios from 'axios'
 
+const { MODE, VITE_BACKEND_URL_DEV, VITE_BACKEND_URL_PROD } = import.meta.env
+export const BACKEND_URL = MODE === 'development' ? VITE_BACKEND_URL_DEV : VITE_BACKEND_URL_PROD
+
 const clienteAxios = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_URL}/api`
+  baseURL: `${BACKEND_URL}/api`
 })
 
 export default clienteAxios

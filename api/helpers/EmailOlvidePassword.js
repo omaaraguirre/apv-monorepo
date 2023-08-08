@@ -12,6 +12,8 @@ const emailOlvidePassword = async (data) => {
     }
   })
 
+  const FRONTEND_URL = process.env.NODE_ENV === 'development' ? process.env.FRONTEND_URL_DEV : process.env.FRONTEND_URL_PROD
+
   const { email, nombre, token } = data
   const info = await transport.sendMail({
     from: `APV <${process.env.EMAIL_USER}>`,
@@ -21,7 +23,7 @@ const emailOlvidePassword = async (data) => {
     html: `
         Hola <strong>${nombre}</strong></p>
         <p>Has solicitado reestablecer tu contraseña. Haz click en el siguiente enlace para continuar:</p>
-        <p><a href='${process.env.FRONTEND_URL}/olvide/${token}'>Reestablecer contraseña</a></p>
+        <p><a href='${FRONTEND_URL}/olvide/${token}'>Reestablecer contraseña</a></p>
         <p>Si no solicitaste esto, puedes ignorar el correo.</p>
         `
   })

@@ -19,7 +19,7 @@ app.use('/api/pacientes', pacienteRoutes)
 app.use((req, res) => res.status(404).send({ error: 'Not found' }))
 // app.use((req, res) => res.sendFile(path.resolve('../app/dist/index.html')))
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 3000
 app.listen(port, () => {
-  console.log(`Server running on port: ${port}`)
+  console.log('Server running')
 })
