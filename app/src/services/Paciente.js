@@ -10,8 +10,8 @@ export const getPatients = async () => {
         Authorization: `Bearer ${token}`
       }
     }
-    const { data, statusText } = await clienteAxios('/pacientes', config)
-    return { data, ok: statusText === 'OK' }
+    const { data, status } = await clienteAxios('/pacientes', config)
+    return { data, ok: status >= 200 && status < 300 }
   } catch (error) {
     return { data: error.response.data, ok: false }
   }
@@ -26,8 +26,8 @@ export const addPatient = async patient => {
     }
   }
   try {
-    const { data, statusText } = await clienteAxios.post('/pacientes', patient, config)
-    return { data, ok: statusText === 'OK' }
+    const { data, status } = await clienteAxios.post('/pacientes', patient, config)
+    return { data, ok: status >= 200 && status < 300 }
   } catch (error) {
     return { data: error.response.data, ok: false }
   }
@@ -42,8 +42,8 @@ export const updatePatient = async patient => {
     }
   }
   try {
-    const { data, statusText } = await clienteAxios.put(`/pacientes/${patient.id}`, patient, config)
-    return { data, ok: statusText === 'OK' }
+    const { data, status } = await clienteAxios.put(`/pacientes/${patient.id}`, patient, config)
+    return { data, ok: status >= 200 && status < 300 }
   } catch (error) {
     return { data: error.response.data, ok: false }
   }
@@ -58,8 +58,8 @@ export const deletePatient = async id => {
         Authorization: `Bearer ${token}`
       }
     }
-    const { data, statusText } = await clienteAxios.delete(`/pacientes/${id}`, config)
-    return { data, ok: statusText === 'OK' }
+    const { data, status } = await clienteAxios.delete(`/pacientes/${id}`, config)
+    return { data, ok: status >= 200 && status < 300 }
   } catch (error) {
     return { data: error.response.data, ok: false }
   }
