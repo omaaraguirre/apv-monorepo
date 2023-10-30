@@ -1,25 +1,26 @@
+import 'dotenv/config.js'
 import express from 'express'
+import morgan from 'morgan'
+import cors from 'cors'
+import createHttpError from 'http-errors'
 import conectarDB from './config/db.js'
-import dotenv from 'dotenv'
+import { PORT, WHITELISTED_DOMAINS } from './config/config.js'
 import veterinarioRoutes from './routes/veterinarioRoutes.js'
 import pacienteRoutes from './routes/pacienteRoutes.js'
-import cors from 'cors'
+import errorMiddleware from './middleware/errorMiddleware.js'
 
-const app = express()
-app.use(express.json()) // Habilita el envío de JSON vía POST
-dotenv.config()
 conectarDB()
 
-app.use(cors())
-// app.use(express.static('../app/dist'))
+const app = express()
+app.use(morgan('dev'))
+app.use(express.json())
+app.use(cors(
+  { origin: WHITELISTED_DOMAINS }
+))
 
 app.use('/api/veterinarios', veterinarioRoutes)
 app.use('/api/pacientes', pacienteRoutes)
+app.use((req, res, next) => next(createHttpError(404, 'Ruta no encontrada')))
+app.use(errorMiddleware)
 
-app.use((req, res) => res.status(404).send({ error: 'Not found' }))
-// app.use((req, res) => res.sendFile(path.resolve('../app/dist/index.html')))
-
-const port = process.env.PORT || 3000
-app.listen(port, () => {
-  console.log('Server running')
-})
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))

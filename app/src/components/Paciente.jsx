@@ -1,44 +1,54 @@
 import usePacientes from '../hooks/usePacientes'
+import useModal from '../hooks/useModal'
 
 const Paciente = ({ paciente }) => {
+  const { email, fecha, nombre, propietario, sintomas, id } = paciente
   const { setEdicion, eliminarPaciente } = usePacientes()
-
-  const { email, fecha, nombre, propietario, sintomas, _id } = paciente
+  const { setOnConfirm, setShowModal } = useModal()
 
   const formatearFecha = (fecha) => {
     const nuevaFecha = new Date(fecha)
     return new Intl.DateTimeFormat('es-ES', { dateStyle: 'long' }).format(nuevaFecha)
   }
 
+  const handleEdit = () => setEdicion(paciente)
+
+  const handleDelete = () => {
+    setOnConfirm(() => () => eliminarPaciente(id))
+    setShowModal(true)
+  }
+
   return (
-    <div className='mx-5 my-5 bg-white shadow-md px-5 py-5 rounded-xl'>
-      <p className='font-bold uppercase text-indigo-700 my-2'>
-        Nombre: <span className='font-normal normal-case text-black'>{nombre}</span>
+    <div className='flex flex-col gap-1 font-bold uppercase text-secondary dark:text-primary bg-lighter dark:bg-darker shadow-md p-3 md:p-5 rounded-xl w-[min(100%,500px)] mx-auto'>
+      <p className='grid grid-cols-[1fr,2fr] gap-3 text-right'>
+        Nombre: <span className='text-left font-normal normal-case text-dark dark:text-lighter'>{nombre}</span>
       </p>
-      <p className='font-bold uppercase text-indigo-700 my-2'>
-        Propietario: <span className='font-normal normal-case text-black'>{propietario}</span>
+      <p className='grid grid-cols-[1fr,2fr] gap-3 text-right'>
+        Propietario: <span className='text-left font-normal normal-case text-dark dark:text-lighter'>{propietario}</span>
       </p>
-      <p className='font-bold uppercase text-indigo-700 my-2'>
-        Correo: <span className='font-normal normal-case text-black'>{email}</span>
+      <p className='grid grid-cols-[1fr,2fr] gap-3 text-right'>
+        Correo: <span className='text-left font-normal normal-case text-dark dark:text-lighter'>{email}</span>
       </p>
-      <p className='font-bold uppercase text-indigo-700 my-2'>
-        Fecha: <span className='font-normal normal-case text-black'>{formatearFecha(fecha)}</span>
+      <p className='grid grid-cols-[1fr,2fr] gap-3 text-right'>
+        Fecha: <span className='text-left font-normal normal-case text-dark dark:text-lighter'>{formatearFecha(fecha)}</span>
       </p>
-      <p className='font-bold uppercase text-indigo-700 my-2'>
-        Síontomas: <span className='font-normal normal-case text-black'>{sintomas}</span>
+      <p className='grid grid-cols-[1fr,2fr] gap-3 text-right'>
+        Síontomas: <span className='text-left font-normal normal-case text-dark dark:text-lighter'>{sintomas}</span>
       </p>
-      <div className='flex justify-between my-5 gap-2'>
+      <div className='flex gap-5 items-center mx-auto mt-5'>
         <button
           type='button'
-          className='py-2 px-8 bg-indigo-600 hover:bg-indigo-700 text-white uppercase font-bold rounded-lg'
-          onClick={() => setEdicion(paciente)}
-        >Editar
+          className='bg-secondary py-2 px-5 rounded-xl text-white font-bold hover:cursor-pointer hover:bg-primary transition-colors duration-300 md:w-auto'
+          onClick={handleEdit}
+        >
+          Editar
         </button>
         <button
           type='button'
-          className='py-2 px-8 bg-red-600 hover:bg-red-700 text-white uppercase font-bold rounded-lg'
-          onClick={() => eliminarPaciente(_id)}
-        >Eliminar
+          className='bg-medium py-2 px-5 rounded-xl text-white font-bold hover:cursor-pointer hover:bg-red transition-colors duration-300 md:w-auto'
+          onClick={handleDelete}
+        >
+          Eliminar
         </button>
       </div>
     </div>

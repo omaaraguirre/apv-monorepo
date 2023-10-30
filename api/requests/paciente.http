@@ -1,0 +1,35 @@
+### Get user patients
+GET http://localhost:3000/api/pacientes
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2M0NzBhMmMyMDkyMDRmYTE0MDM4YyIsImlhdCI6MTY5ODQ0OTU4MCwiZXhwIjoxNzAxMDQxNTgwfQ.I9bkku49oMCovxPI1PHRDqmRHriBoGjqKgy-pApYdns
+
+### Add patient
+POST http://localhost:3000/api/pacientes
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2M0NzBhMmMyMDkyMDRmYTE0MDM4YyIsImlhdCI6MTY5ODQ0OTU4MCwiZXhwIjoxNzAxMDQxNTgwfQ.I9bkku49oMCovxPI1PHRDqmRHriBoGjqKgy-pApYdns
+
+{
+  "nombre": "Toto",
+  "propietario": "Juan Aguirre",
+  "email": "aaguirre9138@gmail.com",
+  "sintomas": "Problemas respiratorios"
+}
+
+### Get patient data by ID
+GET http://localhost:3000/api/pacientes/653ff60a5adedfe689444811
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2M0NzBhMmMyMDkyMDRmYTE0MDM4YyIsImlhdCI6MTY5ODQ0OTU4MCwiZXhwIjoxNzAxMDQxNTgwfQ.I9bkku49oMCovxPI1PHRDqmRHriBoGjqKgy-pApYdns
+
+### Update patient data by ID
+PUT http://localhost:3000/api/pacientes/653ff60a5adedfe689444811
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2M0NzBhMmMyMDkyMDRmYTE0MDM4YyIsImlhdCI6MTY5ODQ0OTU4MCwiZXhwIjoxNzAxMDQxNTgwfQ.I9bkku49oMCovxPI1PHRDqmRHriBoGjqKgy-pApYdns
+
+{
+  "nombre": "Toto Updated"
+}
+
+### Delete patient by ID
+DELETE http://localhost:3000/api/pacientes/653ff60a5adedfe689444811
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2M0NzBhMmMyMDkyMDRmYTE0MDM4YyIsImlhdCI6MTY5ODQ0OTU4MCwiZXhwIjoxNzAxMDQxNTgwfQ.I9bkku49oMCovxPI1PHRDqmRHriBoGjqKgy-pApYdns

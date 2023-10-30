@@ -38,6 +38,15 @@ const veterinarioSchema = mongoose.Schema({
   }
 })
 
+veterinarioSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id
+    delete returnedObject._id
+    delete returnedObject.__v
+    delete returnedObject.password
+  }
+})
+
 veterinarioSchema.pre('save', async function (next) {
   if (!this.isModified('password')) { next() }
   const salt = await bcrypt.genSalt(10)

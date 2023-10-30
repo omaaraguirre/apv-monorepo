@@ -1,84 +1,71 @@
-import { createContext, useState, useEffect } from 'react'
-import clienteAxios from '../config/axios'
-import useAuth from '../hooks/useAuth'
+import { createContext, useState, useEffect, useRef } from 'react'
+import { showErrorToast, showSuccessToast } from '../config/toast'
+import { getPatients, addPatient, updatePatient, deletePatient } from '../services/Paciente.js'
 
 const PacientesContext = createContext()
 
 export const PacientesProvider = ({ children }) => {
-  const { auth } = useAuth()
   const [pacientes, setPacientes] = useState([])
   const [paciente, setPaciente] = useState({})
+  const [mostrarFormulario, setMostrarFormulario] = useState(false)
+  const formRef = useRef(null)
 
   useEffect(() => {
     const obtenerPacientes = async () => {
-      try {
-        const token = window.localStorage.getItem('token')
-        if (!token) return
-        const url = '/pacientes'
-        const config = {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          }
-        }
-        const { data } = await clienteAxios(url, config)
-        setPacientes(data)
-      } catch (error) {
-        console.log(error.response.data.msg)
-      }
+      const { data, ok } = await getPatients()
+      if (ok) setPacientes(data)
+      else showErrorToast(data.msg)
     }
     obtenerPacientes()
-  }, [auth])
+  }, [])
 
-  const guardarPaciente = async (paciente) => {
-    const token = window.localStorage.getItem('token')
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      }
-    }
-
-    try {
-      if (paciente.id) {
-        const { data } = await clienteAxios.put(`/pacientes/${paciente.id}`, paciente, config)
-        const pacientesActualizados = pacientes.map(pacienteState => pacienteState._id === data._id ? data : pacienteState)
-        setPacientes(pacientesActualizados)
-      } else {
-        const { data } = await clienteAxios.post('/pacientes', paciente, config)
-        const { createdAt, updatedAt, __v, ...pacienteAlmacenado } = data
-        setPacientes([pacienteAlmacenado, ...pacientes])
-      }
-    } catch (error) {
-      console.log(error.response.data.msg)
-    }
+  const guardarPaciente = async paciente => {
+    const { data, ok } = await addPatient(paciente)
+    if (ok) {
+      setPacientes(prevState => [...prevState, data])
+      setMostrarFormulario(false)
+    } else showErrorToast(data.msg)
+    return ok
   }
 
-  const setEdicion = (paciente) => {
-    setPaciente(paciente)
-  }
-
-  const eliminarPaciente = async (id) => {
-    const confirmar = confirm('¿Eliminar?')
-    if (!confirmar) return
-    try {
-      const token = window.localStorage.getItem('token')
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        }
-      }
-      await clienteAxios.delete(`/pacientes/${id}`, config)
-      const pacientesActualizados = pacientes.filter(pacienteState => pacienteState._id !== id)
+  const actualizarPaciente = async paciente => {
+    const { data, ok } = await updatePatient(paciente)
+    if (ok) {
+      const pacientesActualizados = pacientes.map(pac => pac.id === data.id ? data : pac)
       setPacientes(pacientesActualizados)
-    } catch (error) {
-      console.log(error.response.data.msg)
-    }
+      setMostrarFormulario(false)
+    } else showErrorToast(data.msg)
+    return ok
+  }
+
+  const setEdicion = paciente => {
+    setPaciente(paciente)
+    setMostrarFormulario(true)
+    formRef.current.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const eliminarPaciente = async id => {
+    const { data, ok } = await deletePatient(id)
+    if (ok) {
+      const pacientesActualizados = pacientes.filter(pacienteState => pacienteState.id !== id)
+      setPacientes(pacientesActualizados)
+      showSuccessToast('Paciente eliminado')
+    } else showErrorToast(data.msg)
   }
 
   return (
-    <PacientesContext.Provider value={{ pacientes, guardarPaciente, setEdicion, paciente, eliminarPaciente }}>
+    <PacientesContext.Provider value={{
+      pacientes,
+      guardarPaciente,
+      actualizarPaciente,
+      setEdicion,
+      formRef,
+      mostrarFormulario,
+      setMostrarFormulario,
+      paciente,
+      eliminarPaciente
+    }}
+    >
       {children}
     </PacientesContext.Provider>
   )

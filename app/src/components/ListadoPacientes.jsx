@@ -1,23 +1,24 @@
 import usePacientes from '../hooks/usePacientes'
 import Paciente from './Paciente'
 
-function ListadoPacientes () {
+const ListadoPacientes = () => {
   const { pacientes } = usePacientes()
 
   return (
     <>
-      {
-        pacientes.length
-          ? <>
-            <h2 className='font-black text-3xl text-center'>Listado de Pacientes</h2>
-            <p className='text-xl mt-5 mb-10 text-center'>Administra tus <span className='text-indigo-600 font-bold'>Pacientes y Citas</span></p>
-            {pacientes.map(paciente => (<Paciente key={paciente._id} paciente={paciente} />))}
-            </>
-          : <>
-            <h2 className='font-black text-3xl text-center'>No hay pacientes</h2>
-            <p className='text-xl mt-5 mb-10 text-center'>Comienza agregando pacientes y <span className='text-indigo-600 font-bold'>aparecerán aquí</span></p>
-            </>
-      }
+      <h2 className='text-dark dark:text-lighter font-black text-3xl text-center'>
+        Listado de Pacientes
+      </h2>
+      <p className='text-medium dark:text-light text-xl my-5 text-center'>
+        Administra tus <span className='text-primary font-bold'>Pacientes y Citas</span>
+      </p>
+      <div className='flex flex-col gap-10'>
+        {
+          pacientes.length
+            ? pacientes.map(paciente => (<Paciente key={paciente.id} paciente={paciente} />))
+            : <p className='text-medium dark:text-light text-center'>Comienza agregando pacientes y aparecerán aquí</p>
+        }
+      </div>
     </>
   )
 }

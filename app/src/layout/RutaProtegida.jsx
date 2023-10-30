@@ -1,22 +1,26 @@
-import { Outlet, Navigate } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
+import useModal from '../hooks/useModal'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import Loading from '../components/Loading'
+import Modal from '../components/Dialog'
 
 const RutaProtegida = () => {
   const { auth, cargando } = useAuth()
-  if (cargando) { return 'Loading...' }
+  const { showModal } = useModal()
+
+  if (cargando) { return <Loading /> }
+  if (!auth.id) { return <Navigate to='/' /> }
+
   return (
     <>
       <Header />
-      {auth?._id
-        ? (
-          <main className='container mx-auto mt-10'>
-            <Outlet />
-          </main>
-          )
-        : <Navigate to='/' />}
+      <main className='px-5 py-10 max-w-7xl mx-auto'>
+        <Outlet />
+      </main>
       <Footer />
+      {showModal && <Modal />}
     </>
   )
 }

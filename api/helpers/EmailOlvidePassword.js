@@ -1,22 +1,21 @@
 import nodemailer from 'nodemailer'
+import { EMAIL_CONFIG, FRONTEND_URL } from '../config/config'
 
 const emailOlvidePassword = async (data) => {
   const transport = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
+    host: EMAIL_CONFIG.HOST,
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
+      user: EMAIL_CONFIG.USER,
+      pass: EMAIL_CONFIG.PASS
     },
     tls: {
       rejectUnauthorized: false
     }
   })
 
-  const FRONTEND_URL = process.env.NODE_ENV === 'development' ? process.env.FRONTEND_URL_DEV : process.env.FRONTEND_URL_PROD
-
   const { email, nombre, token } = data
   const info = await transport.sendMail({
-    from: `APV <${process.env.EMAIL_USER}>`,
+    from: `APV <${EMAIL_CONFIG.USER}>`,
     to: email,
     subject: 'Reestablece tu contraseña en APV',
     text: 'Reestablece tu contraseña en APV',

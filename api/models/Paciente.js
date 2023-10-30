@@ -28,6 +28,14 @@ const pacientesSchema = mongoose.Schema({
   }
 }, { timestamps: true })
 
+pacientesSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
+
 const Paciente = mongoose.model('Paciente', pacientesSchema)
 
 export default Paciente

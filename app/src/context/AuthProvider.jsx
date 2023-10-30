@@ -1,104 +1,114 @@
 import { useState, useEffect, createContext } from 'react'
-import clienteAxios from '../config/axios'
+import { useNavigate } from 'react-router-dom'
+import { showErrorToast, showSuccessToast } from '../config/toast'
+import { activateUser, changePassword, getUserData, requestPasswordChange, signIn, signUp, updateInfo, updatePassword, validateToken } from '../services/Auth'
 
 const AuthContext = createContext()
 
-export const AuthProvider = (props) => {
-  const { children } = props
+export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({})
   const [cargando, setCargando] = useState(true)
-  const [alerta, setAlerta] = useState({})
+  const navigate = useNavigate()
 
   useEffect(() => {
     const autenticarUsuario = async () => {
       const token = window.localStorage.getItem('token')
-      if (!token) {
-        setCargando(false)
-        return
-      }
+      if (!token) return setCargando(false)
 
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        }
-      }
+      const { data, ok } = await getUserData(token)
+      if (ok) {
+        setAuth(ok ? data : {})
+      } else showErrorToast(data.msg)
 
-      try {
-        const { data } = await clienteAxios('/veterinarios/perfil', config)
-        setAuth(data)
-      } catch (error) {
-        setAuth({})
-      }
       setCargando(false)
     }
     autenticarUsuario()
   }, [])
 
+  const register = async ({ nombre, email, password }) => {
+    const { data, ok } = await signUp({ nombre, email, password })
+    if (ok) {
+      showSuccessToast(`Se han enviado las instrucciones de activación a ${data.email}`)
+    } else {
+      showErrorToast(data.msg)
+    }
+  }
+
+  const confirmarCuenta = async token => {
+    const { data, ok } = await activateUser(token)
+    setCargando(false)
+    if (ok) showSuccessToast(data.msg)
+    else showErrorToast(data.msg)
+    return ok
+  }
+
+  const solicitarCambioPassword = async ({ email }) => {
+    const { data, ok } = await requestPasswordChange(email)
+    if (ok) showSuccessToast(data.msg)
+    else showErrorToast(data.msg)
+    return ok
+  }
+
+  const comprobarToken = async token => {
+    const { data, ok } = await validateToken(token)
+    if (!ok) showErrorToast(data.msg)
+    return ok
+  }
+
+  const cambiarPassword = async (token, password) => {
+    const { data, ok } = await changePassword(token, password)
+    if (ok) showSuccessToast(data.msg)
+    else showErrorToast(data.msg)
+    return ok
+  }
+
+  const login = async ({ email, password }) => {
+    const { data, ok } = await signIn({ email, password })
+    if (ok) {
+      window.localStorage.setItem('token', data.token)
+      setAuth(data)
+      navigate('/admin')
+    } else {
+      showErrorToast(data.msg)
+    }
+  }
+
   const cerrarSesion = () => {
     window.localStorage.removeItem('token')
     setAuth({})
+    navigate('/')
   }
 
-  const actualizarPerfil = async (datos) => {
+  const actualizarPerfil = async info => {
     const token = window.localStorage.getItem('token')
     if (!token) { return setCargando(false) }
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      }
-    }
-
-    try {
-      const url = `/veterinarios/perfil/${datos._id}`
-      await clienteAxios.put(url, datos, config)
-
-      mostrarAlerta('Cambios guardados')
-    } catch (error) {
-      mostrarAlerta(error.response.data.msg, true)
-    }
+    const { data, ok } = await updateInfo({ token, info })
+    if (ok) showSuccessToast(data.msg)
+    else showErrorToast(data.msg)
   }
 
-  const actualizarPassword = async (datos) => {
+  const actualizarPassword = async password => {
     const token = window.localStorage.getItem('token')
     if (!token) { return setCargando(false) }
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      }
-    }
-
-    try {
-      const url = '/veterinarios/actualizarpassword'
-      const { data } = await clienteAxios.put(url, datos, config)
-      console.log(data)
-      mostrarAlerta('Cambios guardados')
-    } catch (error) {
-      mostrarAlerta(error.response.data.msg, true)
-    }
-  }
-
-  const mostrarAlerta = (msg, error = false) => {
-    setAlerta({ msg, error })
-    setTimeout(() => {
-      setAlerta({})
-    }, 3000)
+    const { data, ok } = await updatePassword({ token, password })
+    if (ok) showSuccessToast(data.msg)
+    else showErrorToast(data.msg)
+    return ok
   }
 
   return (
     <AuthContext.Provider value={{
       auth,
-      setAuth,
       cargando,
+      login,
       cerrarSesion,
+      register,
+      confirmarCuenta,
+      solicitarCambioPassword,
+      comprobarToken,
+      cambiarPassword,
       actualizarPerfil,
-      actualizarPassword,
-      mostrarAlerta,
-      alerta
+      actualizarPassword
     }}
     >
       {children}

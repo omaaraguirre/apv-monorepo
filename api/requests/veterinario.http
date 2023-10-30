@@ -1,0 +1,72 @@
+### Create account
+POST http://localhost:3000/api/veterinarios
+Content-Type: application/json
+
+{
+  "email": "omaaraguirre@gmail.com",
+  "nombre": "John Doe",
+  "password": "123"
+}
+
+### Activate account by Token
+GET http://localhost:3000/api/veterinarios/confirmar/c433ea5f-4e3b-4453-9015-4eaa1a68e30e
+
+### Request password change
+POST http://localhost:3000/api/veterinarios/olvide
+Content-Type: application/json
+
+{
+  "email": "omaaraguirre@gmail.com"
+}
+
+### Validate token (password change)
+GET http://localhost:3000/api/veterinarios/olvide/428062dd-a81a-461f-933f-621471fbd94a
+
+### Change password by Token
+POST http://localhost:3000/api/veterinarios/olvide/428062dd-a81a-461f-933f-621471fbd94a
+Content-Type: application/json
+
+{
+  "password": "password"
+}
+
+### Login
+POST http://localhost:3000/api/veterinarios/login
+Content-Type: application/json
+
+{
+  "email": "omaaraguirre@gmail.com",
+  "password": "123"
+}
+
+### Get user data
+GET http://localhost:3000/api/veterinarios/perfil
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2M0NzBhMmMyMDkyMDRmYTE0MDM4YyIsImlhdCI6MTY5ODQ0OTU4MCwiZXhwIjoxNzAxMDQxNTgwfQ.I9bkku49oMCovxPI1PHRDqmRHriBoGjqKgy-pApYdns
+
+### Update user data
+PUT http://localhost:3000/api/veterinarios/perfil/
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2M0NzBhMmMyMDkyMDRmYTE0MDM4YyIsImlhdCI6MTY5ODQ0OTU4MCwiZXhwIjoxNzAxMDQxNTgwfQ.I9bkku49oMCovxPI1PHRDqmRHriBoGjqKgy-pApYdns
+
+{
+  "nombre": "John Updated",
+  "email": "omaaraguirre@gmail.com"
+}
+
+### Update password
+PUT http://localhost:3000/api/veterinarios/actualizarpassword
+Content-Type: application/json
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2M0NzBhMmMyMDkyMDRmYTE0MDM4YyIsImlhdCI6MTY5ODQ0OTU4MCwiZXhwIjoxNzAxMDQxNTgwfQ.I9bkku49oMCovxPI1PHRDqmRHriBoGjqKgy-pApYdns
+
+{
+  "passwordActual": "password",
+  "nuevoPassword": "password"
+}
+
+
+# ### Get user data by Email
+# GET http://localhost:3000/api/veterinarios/omaaraguirre@gmail.com
+
+# ### Delete account
+# DELETE http://localhost:3000/api/veterinarios/eliminar/omaaraguirre@gmail.com
