@@ -16,9 +16,8 @@ export const AuthProvider = ({ children }) => {
       if (!token) return setCargando(false)
 
       const { data, ok } = await getUserData(token)
-      if (ok) {
-        setAuth(ok ? data : {})
-      } else showErrorToast(data.msg)
+      setAuth(ok ? data : {})
+      !ok && showErrorToast(data.msg)
 
       setCargando(false)
     }
