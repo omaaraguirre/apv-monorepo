@@ -15,7 +15,8 @@ export const FRONTEND_URL = IS_DEV
 export const EMAIL_CONFIG = {
   HOST: process.env.EMAIL_HOST,
   USER: process.env.EMAIL_USER,
-  PASS: process.env.EMAIL_PASS
+  PASS: process.env.EMAIL_PASS,
+  FROM: process.env.EMAIL_FROM,
 }
 
 export const { MONGO_URI, JWT_SECRET } = process.env
