@@ -16,7 +16,7 @@ const RutaProtegida = () => {
   return (
     <>
       <Header />
-      <main className='px-5 py-10 max-w-7xl mx-auto'>
+      <main className='py-10 w-[min(95%,1200px)] mx-auto'>
         <Outlet />
       </main>
       <Footer />

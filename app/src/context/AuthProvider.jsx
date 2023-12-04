@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }) => {
     } else {
       showErrorToast(data.msg)
     }
+    return ok
   }
 
   const confirmarCuenta = async token => {

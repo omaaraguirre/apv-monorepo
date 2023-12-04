@@ -7,7 +7,7 @@ const Header = () => {
 
   return (
     <header className='py-10 bg-primary dark:bg-secondary'>
-      <div className='container mx-auto flex flex-col lg:flex-row justify-between items-center gap-5'>
+      <div className='w-[min(95%,1200px)] mx-auto flex flex-col lg:flex-row justify-between items-center gap-5'>
         <h1 className='font-bold text-2xl text-lighter text-center'>
           Administrador de Pacientes de <span className='text-white font-black'>Veterinaria</span>
         </h1>

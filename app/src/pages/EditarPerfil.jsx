@@ -6,7 +6,12 @@ import FormInput from '../components/FormInput'
 
 const EditarPerfil = () => {
   const { auth, actualizarPerfil } = useAuth()
-  const [perfil, setPerfil] = useState({})
+  const [perfil, setPerfil] = useState({
+    nombre: '',
+    web: '',
+    telefono: '',
+    email: ''
+  })
 
   useEffect(() => {
     setPerfil(auth)
@@ -52,32 +57,36 @@ const EditarPerfil = () => {
         className='flex flex-col text-medium dark:text-light font-bold shadow-lg p-5 rounded-xl bg-lighter dark:bg-darker w-[min(100%,600px)] mx-auto'
       >
         <FormInput
+          name='nombre'
           label='Nombre'
           type='text'
           placeholder='John Doe'
-          value={perfil.nombre || ''}
+          value={perfil.nombre}
           onChange={handleChange}
           autoFocus
         />
         <FormInput
+          name='web'
           label='Sitio Web'
           type='text'
           placeholder='https://www.example.com'
-          value={perfil.web || ''}
+          value={perfil.web}
           onChange={handleChange}
         />
         <FormInput
+          name='telefono'
           label='Teléfono'
           type='tel'
           placeholder='1234567890'
-          value={perfil.telefono || ''}
+          value={perfil.telefono}
           onChange={handleChange}
         />
         <FormInput
+          name='email'
           label='Correo'
           type='email'
           placeholder='john_doe@domain.com'
-          value={perfil.email || ''}
+          value={perfil.email}
           onChange={handleChange}
         />
         <input
