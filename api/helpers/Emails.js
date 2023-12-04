@@ -15,7 +15,7 @@ const transport = nodemailer.createTransport({
 export const emailRegistro = async ({ email, nombre, token }) => {
   try {
     const info = await transport.sendMail({
-      from: `APV <${EMAIL_CONFIG.FROM}>`,
+      from: `APV <${EMAIL_CONFIG.USER}>`,
       to: email,
       subject: 'Comprueba tu Cuenta en APV',
       text: 'Comprueba tu cuenta en APV',
@@ -34,7 +34,7 @@ export const emailRegistro = async ({ email, nombre, token }) => {
 
 export const emailOlvidePassword = async ({ email, nombre, token }) => {
   const info = await transport.sendMail({
-    from: `APV <${EMAIL_CONFIG.FROM}>`,
+    from: `APV <${EMAIL_CONFIG.USER}>`,
     to: email,
     subject: 'Reestablece tu contraseña en APV',
     text: 'Reestablece tu contraseña en APV',

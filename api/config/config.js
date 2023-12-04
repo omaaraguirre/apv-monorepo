@@ -9,14 +9,13 @@ export const WHITELISTED_DOMAINS = IS_DEV
   : process.env.P_WHITELISTED_DOMAINS.split(',')
 
 export const FRONTEND_URL = IS_DEV
-  ? process.env.D_FRONTEND_URL.split(',')
-  : process.env.P_FRONTEND_URL.split(',')
+  ? process.env.D_FRONTEND_URL
+  : process.env.P_FRONTEND_URL
 
 export const EMAIL_CONFIG = {
   HOST: process.env.EMAIL_HOST,
   USER: process.env.EMAIL_USER,
-  PASS: process.env.EMAIL_PASS,
-  FROM: process.env.EMAIL_FROM,
+  PASS: process.env.EMAIL_PASS
 }
 
 export const { MONGO_URI, JWT_SECRET } = process.env

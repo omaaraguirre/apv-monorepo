@@ -165,7 +165,7 @@ export const actualizarPerfil = async (req, res, next) => {
     veterinario.web = web
     veterinario.telefono = telefono
     const veterinarioActualizado = await veterinario.save()
-    res.json(veterinarioActualizado)
+    res.json({ ...veterinarioActualizado, msg: 'Perfil actualizado' })
   } catch (error) {
     next(error)
   }
